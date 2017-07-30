@@ -77,8 +77,7 @@ public class GameWindow extends Frame {
                         dy = +3;
                         break;
                 }
-                playersX+=dx;
-                playersY+=dy;
+
             }
             @Override
             public void keyReleased(KeyEvent e) {
@@ -120,7 +119,8 @@ public class GameWindow extends Frame {
     }
 
     private void run() {
-
+        playersX+=dx;
+        playersY+=dy;
     }
 
     private void render() {
