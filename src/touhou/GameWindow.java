@@ -10,7 +10,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
 /**
- * Created by vhtbcvt on 7/30/17.
+ * land = 56;
+ *
  */
 public class GameWindow extends Frame {
 
@@ -18,19 +19,17 @@ public class GameWindow extends Frame {
     private long currentTime;
     private Graphics2D windowGraphics;
     private BufferedImage background;
-    private BufferedImage players;
+    private BufferedImage pIdle;
     private BufferedImage backbufferedImage;
     private Graphics2D backbufferedGraphics;
-    private int playersX = 192;
-    private int playersY = 650;
-    private int backgroundY = 768;
-    private int dx ;
-    private int dy ;
+    //private pIdleY= 68+ sizeC;
+    private int bgX = 0;
+
 
 
     public GameWindow() {
-        background = SpriteUtils.loadImage("assets/images/background/0.png");
-        players = SpriteUtils.loadImage("assets/images/players/straight/1.png");
+        background = SpriteUtils.loadImage("assets/images/background/Background.png");
+        pIdle = SpriteUtils.loadImage("assets/images/players/Idle/Idle__000.png");
         setupGameLoop();
         setupWindow();
     }
@@ -40,8 +39,8 @@ public class GameWindow extends Frame {
     }
 
     private void setupWindow() {
-        this.setSize(384, 768);
-        this.setTitle("Touhou = Remade by vhtbcvt");
+        this.setSize(928, 700);
+        this.setTitle("Ninja = Made by vhtbcvt");
         this.setVisible(true);
 
         this.backbufferedImage = new BufferedImage(getWidth(),getHeight(),BufferedImage.TYPE_INT_ARGB);
@@ -54,54 +53,6 @@ public class GameWindow extends Frame {
                 System.exit(0);
             }
         });
-        this.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                int key = e.getKeyCode();
-                switch (key) {
-                    case KeyEvent.VK_RIGHT:
-                        dx = 3;
-                        break;
-                    case KeyEvent.VK_LEFT:
-                        dx = -3;
-                        break;
-                    case KeyEvent.VK_UP:
-                        dy = -3;
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        dy = +3;
-                        break;
-                }
-
-            }
-            @Override
-            public void keyReleased(KeyEvent e) {
-                int key = e.getKeyCode();
-                switch (key) {
-                    case KeyEvent.VK_RIGHT:
-                        dx = 0;
-                        break;
-                    case KeyEvent.VK_LEFT:
-                        dx = 0;
-                        break;
-                    case KeyEvent.VK_UP:
-                        dy = 0;
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        dy = 0;
-                        break;
-                }
-            }
-
-        });
-
-
-
     }
 
     public void loop() {
@@ -119,16 +70,16 @@ public class GameWindow extends Frame {
     }
 
     private void run() {
-        playersX+=dx;
-        playersY+=dy;
+        bgX -= 1;
     }
 
     private void render() {
         backbufferedGraphics.setColor(Color.black);
         backbufferedGraphics.fillRect(0,0,getWidth(),getHeight());
-        backbufferedGraphics.drawImage(background,0,backgroundY-3109,null);
-        backgroundY+=1;
-        backbufferedGraphics.drawImage(players,playersX,playersY,null);
+        if (bgX<0) bgX+=getWidth();
+        backbufferedGraphics.drawImage(background, bgX-getWidth(), -93, null);
+        backbufferedGraphics.drawImage(background, bgX, -93, null);
+        backbufferedGraphics.drawImage(pIdle, 100, getHeight()-(56+439), null);
 
         windowGraphics.drawImage(backbufferedImage,0,0,null);
     }
